@@ -1,6 +1,6 @@
 // src/App.tsx
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import SearchModal from './components/SearchModal';
 import NotFound from './components/NotFound';
@@ -14,9 +14,19 @@ import Testimonial from './components/Testimonial';
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';
 import PageHeader from './components/PageHeader';
+import { useLocation } from 'react-router-dom'; // Import useLocation here
 
 const App: React.FC = () => {
-  const location = useLocation();
+    return (
+        <Router>
+            <MainContent />
+        </Router>
+    );
+};
+
+const MainContent: React.FC = () => {
+    const location = useLocation(); // Move useLocation here
+
     const getTitle = () => {
         switch (location.pathname) {
             case '/':
@@ -37,8 +47,9 @@ const App: React.FC = () => {
                 return 'Page Not Found';
         }
     };
+
     return (
-        <Router>
+        <>
             <Navbar />
             <SearchModal />
             <PageHeader title={getTitle()} />
@@ -53,7 +64,7 @@ const App: React.FC = () => {
                 <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
-        </Router>
+        </>
     );
 };
 
