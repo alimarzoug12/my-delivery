@@ -5,7 +5,7 @@ import Navbar from './components/Navbar';
 import SearchModal from './components/SearchModal';
 import NotFound from './components/NotFound';
 import Footer from './components/Footer';
-import Hero from './components/Hero'; 
+import Home from './components/Home'; 
 import Shop from './components/Shop'; 
 import Contact from './components/Contact'; 
 import './App.css'; // Your custom styles
@@ -15,6 +15,7 @@ import Cart from './components/Cart';
 import Checkout from './components/Checkout';
 import PageHeader from './components/PageHeader';
 import { useLocation } from 'react-router-dom'; // Import useLocation here
+import Index from './pages';
 
 const App: React.FC = () => {
     return (
@@ -54,7 +55,7 @@ const MainContent: React.FC = () => {
             <SearchModal />
             <PageHeader title={getTitle()} />
             <Routes>
-                <Route path="/" element={<Hero />} />
+                <Route path="/" element={<Home />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/testimonial" element={<Testimonial />} />

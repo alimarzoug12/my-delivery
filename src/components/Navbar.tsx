@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
                         <div className="navbar-nav mx-auto">
                             <a href="/" className="nav-item nav-link active">Home</a>
                             <a href="/shop" className="nav-item nav-link">Shop</a>
-                            <a href="/shop-detail" className="nav-item nav-link">Shop Detail</a>
+                            <a href="/productDetail" className="nav-item nav-link">Shop Detail</a>
                             <div className="nav-item dropdown">
                                 <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div className="dropdown-menu m-0 bg-secondary rounded-0">
