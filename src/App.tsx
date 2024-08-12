@@ -14,6 +14,7 @@ import Testimonial from './components/Testimonial';
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';
 import PageHeader from './components/PageHeader';
+import ScrollToTopButton from './components/ScrollToTopButton';
 import { useLocation } from 'react-router-dom'; // Import useLocation here
 import Index from './pages';
 
@@ -53,7 +54,7 @@ const MainContent: React.FC = () => {
         <>
             <Navbar />
             <SearchModal />
-            <PageHeader title={getTitle()} />
+            {/* <PageHeader title={getTitle()} /> */}
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/checkout" element={<Checkout />} />
@@ -64,6 +65,7 @@ const MainContent: React.FC = () => {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
+            <ScrollToTopButton />
             <Footer />
         </>
     );
