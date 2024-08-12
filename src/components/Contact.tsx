@@ -1,7 +1,7 @@
 // src/components/Contact.tsx
 import React from 'react';
 
-const Contact: React.FC = () => {
+export default function Contact(){
     return (
         <div className="container-fluid contact py-5">
             <div className="container py-5">
@@ -56,4 +56,3 @@ const Contact: React.FC = () => {
     );
 };
 
-export default Contact;
