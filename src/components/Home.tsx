@@ -1,70 +1,157 @@
 // src/components/Hero.tsx
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
+import card from '../card.json';
 
 
-const Home: React.FC = () => {
+
+
+export default function Home(){
+    const handleClick = (category: any) => {
+        // Update the modal content
+        const modalTitle = document.getElementById('modalShopLabel');
+        const modalBody = document.querySelector('#modalShop .modal-body');
+    
+        if (modalTitle && modalBody) {
+            modalTitle.innerText = category.title;
+            modalBody.innerHTML = `
+                <h4>${category.title}</h4>
+                <img src="${category.imageUrl.Default.urlDefault}" class="img-fluid w-100 rounded-top mb-3" alt="${category.title}" style="height: 150px;" />
+                <p>${category.description.Default.nameDefault}</p>
+            `;
+        }
+    
+        // Show the modal
+        const modalElement = document.getElementById('modalShop');
+        if (modalElement) {
+            modalElement.classList.add('show');
+            modalElement.style.display = 'block';
+            modalElement.removeAttribute('aria-hidden');
+            modalElement.setAttribute('aria-modal', 'true');
+    
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop fade show';
+            document.body.appendChild(backdrop);
+        }
+    };
+    
+      const handleClose = () => {
+        const modalElement = document.getElementById('modalShop');
+        const backdrop = document.getElementById('modalBackdrop');
+        if (modalElement) {
+          modalElement.classList.remove('show');
+          modalElement.style.display = 'none';
+          modalElement.setAttribute('aria-hidden', 'true');
+          modalElement.removeAttribute('aria-modal');
+    
+          if (backdrop) {
+            document.body.removeChild(backdrop);
+          }
+        }
+      };
+    //   const [categories, setCategories] = useState<CardData []>([]);
+
+    //   useEffect(() => {
+    //     fetch('./card.json')
+    //       .then((response) => response.json())
+    //       .then((data) => setCategories(data))
+    //       .catch((error) => console.error('Error fetching categories:', error));
+    //   }, []);
+    const shopCard :any=card
+    const categories:any=shopCard[0].categories
+    const categoriesArray = Object.values(categories).flatMap((categoriee: any) => categoriee.categoriesIuud);
+
+
+
     return (
         <div>
-    //     {/* Modal Search Start */}
-    //     <div className="modal fade" id="searchModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
-    //     <div className="modal-dialog modal-fullscreen">
-    //         <div className="modal-content rounded-0">
-    //             <div className="modal-header">
-    //                 <h5 className="modal-title" id="exampleModalLabel">Search by keyword</h5>
-    //                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    //             </div>
-    //             <div className="modal-body d-flex align-items-center">
-    //                 <div className="input-group w-75 mx-auto d-flex">
-    //                     <input type="search" className="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1" />
-    //                     <span id="search-icon-1" className="input-group-text p-3"><i className="fa fa-search"></i></span>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     </div>
-    // </div>
-    // {/* Modal Search End */}
+         {/* Modal Search Start */}
+         <div className="modal fade" id="searchModal" tabIndex={-1} aria-labelledby="modalShopLabel" aria-hidden="true">
+         <div className="modal-dialog modal-fullscreen">
+             <div className="modal-content rounded-0">
+                 <div className="modal-header">
+                     <h5 className="modal-title" id="modalShopLabel">Search by keyword</h5>
+                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                 </div>
+                 <div className="modal-body d-flex align-items-center">
+                     <div className="input-group w-75 mx-auto d-flex">
+                         <input type="search" className="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1" />
+                         <span id="search-icon-1" className="input-group-text p-3"><i className="fa fa-search"></i></span>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+     Modal Search End
 
     {/* Hero Start */}
-    <div className="container-fluid py-5 mb-5 hero-header">
+
+    <div className="modal fade" id="modalShop" tabIndex={-1} aria-labelledby="modalShopLabel" aria-hidden="true">
+    <div className="modal-dialog">
+        <div className="modal-content">
+            <div className="modal-header">
+                <h5 className="modal-title" id="modalShopLabel"></h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleClose}></button>
+            </div>
+            <div className="modal-body">
+                
+            </div>
+            <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleClose}>Cancel</button>
+                <button type="button" className="btn btn-primary">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+   
+
+    <div className="container-fluid py-5 mt-7 mb-5 position-relative">
+    <video autoPlay muted loop className="position-absolute top-0 start-0 " style={{ zIndex: -1, width: '100%', height: '70vh', objectFit: 'cover' }} // Adjust height as needed
+>
+            <source src="img/burger 1.mp4" type="video/mp4" />
+        </video>
         <div className="container py-5">
             <div className="row g-5 align-items-center">
                 <div className="col-md-12 col-lg-7">
-                    <h4 className="mb-3 text-secondary">100% Organic Foods</h4>
-                    <h1 className="mb-5 display-3 text-primary">Organic Veggies & Fruits Foods</h1>
+                    <h1 className="mb-5 mt-5 display-9 text-primary">My Delivery Foods</h1>
                     <div className="position-relative mx-auto">
                         <input className="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="text" placeholder="Search" />
                         <button type="submit" className="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style={{ top: '0', right: '25%' }}>Submit Now</button>
                     </div>
                 </div>
-                <div className="col-md-12 col-lg-5">
-                    <div id="carouselId" className="carousel slide position-relative" data-bs-ride="carousel">
-                        <div className="carousel-inner" role="listbox">
-                            <div className="carousel-item active rounded">
-                                <img src="img/hero-img-1.png" className="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide" />
-                                <a href="#" className="btn px-4 py-2 text-white rounded">Fruits</a>
+                {/* <div className="col-md-12 col-lg-5 scrollable-carousel">
+                        <div id="carouselId" className="carousel slide position-relative" data-bs-ride="carousel">
+                            <div className="carousel-inner" role="listbox">
+                                <div className="carousel-item active rounded">
+                                    <img src="img/hero-img-1.png" className="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide"/>
+                                    <a href="#" className="btn px-4 py-2 text-white rounded">Fruites</a>
+                                </div>
+                                <div className="carousel-item rounded">
+                                    <img src="img/hero-img-2.jpg" className="img-fluid w-100 h-100 rounded" alt="Second slide"/>
+                                    <a href="#" className="btn px-4 py-2 text-white rounded">Vesitables</a>
+                                </div>
                             </div>
-                            <div className="carousel-item rounded">
-                                <img src="img/hero-img-2.jpg" className="img-fluid w-100 h-100 rounded" alt="Second slide" />
-                                <a href="#" className="btn px-4 py-2 text-white rounded">Vegetables</a>
-                            </div>
+                            <button className="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span className="visually-hidden">Previous</span>
+                            </button>
+                            <button className="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                                <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span className="visually-hidden">Next</span>
+                            </button>
                         </div>
-                        <button className="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
-                            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span className="visually-hidden">Previous</span>
-                        </button>
-                        <button className="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
-                            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span className="visually-hidden">Next</span>
-                        </button>
-                    </div>
-                </div>
+                    </div> */}
+
             </div>
         </div>
     </div>
     {/* Hero End */}
 
     {/* Features Section Start */}
-    <div className="container-fluid features py-5">
+    {/* <div className="container-fluid features py-5">
         <div className="container py-5">
             <div className="row g-4">
                 <div className="col-md-6 col-lg-3">
@@ -113,86 +200,91 @@ const Home: React.FC = () => {
                 </div>
             </div>
         </div>
-    </div>
+    </div> */}
     {/* Features Section End */}
 
     {/* Fruits Shop Start */}
-    <div className="container-fluid fruit py-5">
+    <div className="container-fluid fruite py-5">
         <div className="container py-5">
             <div className="tab-class text-center">
                 <div className="row g-4">
                     <div className="col-lg-4 text-start">
-                        <h1>Our Organic Products</h1>
+                        <h1>Our Products</h1>
                     </div>
                     <div className="col-lg-8 text-end">
                         <ul className="nav nav-pills d-inline-flex text-center mb-5">
                             <li className="nav-item">
-                                <a className="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-1">
-                                    <span className="text-dark" style={{ width: '130px' }}>All Products</span>
+                                <a className="d-flex m-2 py-2 bg-light rounded-pill nav-link active" data-bs-toggle="pill" href="#tab-1">
+                                    <span className="text-dark" style={{ width: '100px' }}>All Products</span>
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <a className="d-flex py-2 m-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2">
-                                    <span className="text-dark" style={{ width: '130px' }}>Vegetables</span>
+                                <a className="d-flex py-2 m-2 bg-light rounded-pill nav-link" data-bs-toggle="pill" href="#tab-2">
+                                    <span className="text-dark" style={{ width: '100px' }}>Les plus populaires</span>
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <a className="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-3">
-                                    <span className="text-dark" style={{ width: '130px' }}>Fruits</span>
+                                <a className="d-flex m-2 py-2 bg-light rounded-pill nav-link" data-bs-toggle="pill" href="#tab-3">
+                                    <span className="text-dark " style={{ width: '100px' }}>Croquez le monde</span>
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <a className="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-4">
-                                    <span className="text-dark" style={{ width: '130px' }}>Bread</span>
+                                <a className="d-flex m-2 py-2 bg-light rounded-pill nav-link" data-bs-toggle="pill" href="#tab-4">
+                                    <span className="text-dark" style={{ width: '100px' }}>Nos menus Bergers</span>
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <a className="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-5">
-                                    <span className="text-dark" style={{ width: '130px' }}>Meat</span>
+                                <a className="d-flex m-2 py-2 bg-light rounded-pill nav-link" data-bs-toggle="pill" href="#tab-5">
+                                    <span className="text-dark" style={{ width: '130px' }}>Menu MCFIRST</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <div className="tab-content">
+                <div className="tab-content ">
                     <div id="tab-1" className="tab-pane fade show p-0 active">
                         <div className="row g-4">
                             <div className="col-lg-12">
                                 <div className="row g-4">
-                                    {/* Sample Product Item */}
-                                    {Array.from({ length: 8 }).map((_, index) => (
-                                        <div key={index} className="col-md-6 col-lg-4 col-xl-3">
-                                            <div className="rounded position-relative fruit-item">
-                                                <div className="fruit-img">
-                                                    <img src={`img/fruite-item-${index + 1}.jpg`} className="img-fluid w-100 rounded-top" alt="" />
-                                                </div>
-                                                <div className="text-white bg-secondary px-3 py-1 rounded position-absolute" style={{ top: '10px', left: '10px' }}>Fruits</div>
-                                                <div className="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>Product {index + 1}</h4>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                                    <div className="d-flex justify-content-between flex-lg-wrap">
-                                                        <p className="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                                                        <a href="#" className="btn border border-secondary rounded-pill px-3 text-primary">
-                                                            <i className="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
-                                                        </a>
-                                                    </div>
-                                                </div>
+                            {Object.keys(categories).length > 0 ? (
+                                Object.values(categories).map((category:any) => (
+                                    <div className="col-md-6 col-lg-4 col-xl-3" key={category.id}>
+                                        <div 
+                                            className="rounded position-relative fruite-item border border-warning" 
+                                            onClick={() => handleClick(category)}
+                                        >
+                                            <div className="fruite-img">
+                                                <img 
+                                                    src={category.imageUrl.Default.urlDefault} 
+                                                    className="img-fluid w-100 rounded-top"  
+                                                    alt={category.title} 
+                                                    style={{ height: '150px' }} 
+                                                />
+                                            </div>
+                                            <div className="p-4 rounded-bottom">
+                                                <h4 className='pb-3 pt-2'>{category.title}</h4>
+                                                <p style={{color: 'rgba(0, 0, 0, 0.6)'}}>{category.description.Default.nameDefault}</p>
                                             </div>
                                         </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {/* Additional Tabs can be implemented similarly */}
-                </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No categories available</p>
+                            )}
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div>
+
+
             </div>
         </div>
     </div>
     {/* Fruits Shop End */}
 
     {/* Features Start */}
-    <div className="container-fluid service py-5">
+    {/* <div className="container-fluid service py-5">
         <div className="container py-5">
             <div className="row g-4 justify-content-center">
                 {Array.from({ length: 3 }).map((_, index) => (
@@ -212,10 +304,9 @@ const Home: React.FC = () => {
                 ))}
             </div>
         </div>
-    </div>
+    </div> */}
     {/* Features End */}
     </div>
     );
 };
 
-export default Home;
