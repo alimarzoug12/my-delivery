@@ -26,9 +26,10 @@ const Navbar: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <div className="container px-0">
+            <div className="container px-0 my-2">
                 <nav className="navbar navbar-light bg-white navbar-expand-xl">
-                    <NavLink to="/" className="navbar-brand"><h1 className="text-primary display-8">My Delivery</h1></NavLink>
+                    <a href="/"><img src="img/img-logo.png" style={{height: '100px',marginLeft:'40px' }} alt="/"/></a>
+                    {/* <NavLink to="/" className="navbar-brand"><h1 className="text-primary display-8">My Delivery</h1></NavLink> */}
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span className="fa fa-bars text-primary"></span>
                     </button>
