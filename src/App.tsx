@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import SearchModal from './components/ShopModal';
+import ShopModal from './components/ShopModal';
 import NotFound from './components/NotFound';
 import Footer from './components/Footer';
 import Home from './components/Home'; 
