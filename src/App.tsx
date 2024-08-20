@@ -27,28 +27,35 @@ const App: React.FC = () => {
 };
 
 const MainContent: React.FC = () => {
-    const location = useLocation(); // Move useLocation here
+    const location = useLocation();
+    type Product = {
+        id: string;
+        title: string;
+        urlImage: string;
+        price: string;
+    } 
+    const [addProduct, setAddProduct]= React.useState<Product[]>([]);
 
-    const getTitle = () => {
-        switch (location.pathname) {
-            case '/':
-                return 'Welcome';
-            case '/checkout':
-                return 'Checkout';
-            case '/cart':
-                return 'Your Cart';
-            case '/testimonial':
-                return 'Testimonials';
-            case '/productDetail':
-                return 'Product Details';
-            case '/shop':
-                return 'Shop';
-            case '/contact':
-                return 'Contact Us';
-            default:
-                return 'Page Not Found';
-        }
-    };
+    // const getTitle = () => {
+    //     switch (location.pathname) {
+    //         case '/':
+    //             return 'Welcome';
+    //         case '/checkout':
+    //             return 'Checkout';
+    //         case '/cart':
+    //             return 'Your Cart';
+    //         case '/testimonial':
+    //             return 'Testimonials';
+    //         case '/productDetail':
+    //             return 'Product Details';
+    //         case '/shop':
+    //             return 'Shop';
+    //         case '/contact':
+    //             return 'Contact Us';
+    //         default:
+    //             return 'Page Not Found';
+    //     }
+    // };
 
     return (
         <>
@@ -58,7 +65,7 @@ const MainContent: React.FC = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/checkout" element={<Checkout />} />
-                <Route path="/cart" element={<Cart />} />
+                <Route path="/cart" element={<Cart addProduct={addProduct}/>} />
                 <Route path="/testimonial" element={<Testimonial />} />
                 <Route path="/productDetail" element={<ProductDetail />} />
                 <Route path="/shop" element={<Shop />} />
