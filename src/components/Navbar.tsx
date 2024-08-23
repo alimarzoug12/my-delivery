@@ -1,9 +1,22 @@
 // src/components/Navbar.tsx
-import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store'; // Adjust this import according to your store setup
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+    setSearchTerm: (term: string) => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ setSearchTerm }) => {
+    const totalQuantity = useSelector((state: RootState) => state.shop.totalQuantity);
+    const [searchTerm, setLocalSearchTerm] = useState('');
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const term = e.target.value;
+        setLocalSearchTerm(term);
+        setSearchTerm(term); // Update the parent state
+    };
 
     return (
         <div className="container-fluid fixed-top">
@@ -28,35 +41,30 @@ const Navbar: React.FC = () => {
             </div>
             <div className="container px-0 my-2">
                 <nav className="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="/"><img src="img/img-logo.png" style={{height: '100px',marginLeft:'40px' }} alt="/"/></a>
-                    {/* <NavLink to="/" className="navbar-brand"><h1 className="text-primary display-8">My Delivery</h1></NavLink> */}
+                    <a href="/"><img src="img/img-logo.png" style={{ height: '100px', marginLeft: '40px' }} alt="Logo" /></a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span className="fa fa-bars text-primary"></span>
                     </button>
                     <div className="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div className="navbar-nav mx-auto">
                             <NavLink to="/" className="nav-item nav-link" end>Home</NavLink>
-                            {/* <NavLink to="/shop" className="nav-item nav-link">Shop</NavLink>
-                            <NavLink to="/productDetail" className="nav-item nav-link">Shop Detail</NavLink> */}
-                            <NavLink to="/cart" className="nav-item nav-link">Cart</NavLink>
-                            {/* <div className="nav-item dropdown">
-                                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                                <div className="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <NavLink to="/cart" className="dropdown-item">Cart</NavLink>
-                                    <NavLink to="/checkout" className="dropdown-item">Checkout</NavLink>
-                                    <NavLink to="/testimonial" className="dropdown-item">Testimonial</NavLink>
-                                    <NavLink to="/404" className="dropdown-item">404 Page</NavLink>
-                                </div>
-                            </div> */}
                             <NavLink to="/contact" className="nav-item nav-link">Contact</NavLink>
                         </div>
-                        <div className="d-flex m-3 me-0">
-                            <button className="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i className="fas fa-search text-primary"></i></button>
+                        <div className="d-flex align-items-center">
+                            <input 
+                                type="text" 
+                                className="form-control me-3" 
+                                placeholder="Search" 
+                                value={searchTerm}
+                                onChange={handleSearchChange} 
+                            />
                             <a href="/cart" className="position-relative me-4 my-auto">
                                 <i className="fa fa-shopping-bag fa-2x"></i>
-                                <span className="position-absolute bg-warning rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style={{top: '-5px',left: '15px',height: '20px',minWidth: '20px', }}>0</span>
+                                <span className="position-absolute bg-warning rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style={{ top: '-5px', left: '15px', height: '20px', minWidth: '20px', }}>
+                                    {totalQuantity}
+                                </span>
                             </a>
-                            <a href="#" className="my-auto">
+                            <a href="/signin" className="my-auto">
                                 <i className="fas fa-user fa-2x"></i>
                             </a>
                         </div>
