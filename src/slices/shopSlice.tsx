@@ -1,11 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+interface Price {
+  tva: number;
+  default: number;
+  priceHT: number;
+  override?: number;
+  advancedPrice?: number;
+  saleModeVatRates?: number[];
+}
 
 interface Product {
   id: string;
   title: string;
   urlImage: string;
-  price: number;
+  price: Price;
   quantity: number;
   totalPrice: number;
 }
@@ -47,7 +55,7 @@ const shopSlice = createSlice({
   name: 'shop',
   initialState,
   reducers: {
-    addItem(state, action: PayloadAction<Omit<Product, 'quantity' | 'totalPrice'>>) {
+addItem(state, action: PayloadAction<Omit<Product, 'quantity' | 'totalPrice'>>) {
       const newItem = action.payload;
       const existingItem = state.products.find((item) => item.title === newItem.title);
 
@@ -55,17 +63,17 @@ const shopSlice = createSlice({
         state.products.push({
           ...newItem,
           quantity: 1,
-          totalPrice: newItem.price,
+          totalPrice: newItem.price.default, // Adjusted to use the correct price value
         });
         state.totalQuantity++;
       } else {
         existingItem.quantity++;
-        existingItem.totalPrice += existingItem.price;
+        existingItem.totalPrice += existingItem.price.default; // Adjusted to use the correct price value
         state.totalQuantity++;
       }
 
       state.totalAmount = state.products.reduce(
-        (total, item) => total + item.price * item.quantity,
+        (total, item) => total + item.price.default * item.quantity, // Adjusted to use the correct price value
         0
       );
       setItemFunc(state.products, state.totalAmount, state.totalQuantity);
@@ -80,10 +88,10 @@ const shopSlice = createSlice({
           state.products = state.products.filter(item => item.title !== title);
         } else {
           existingItem.quantity--;
-          existingItem.totalPrice -= existingItem.price;
+          existingItem.totalPrice -= existingItem.price.default; // Adjusted to use the correct price value
         }
         state.totalAmount = Math.max(
-          state.products.reduce((total, item) => total + item.price * item.quantity, 0),
+          state.products.reduce((total, item) => total + item.price.default * item.quantity, 0), // Adjusted to use the correct price value
           0
         );
         setItemFunc(state.products, state.totalAmount, state.totalQuantity);
@@ -97,7 +105,7 @@ const shopSlice = createSlice({
         state.products = state.products.filter(item => item.title !== title);
         state.totalQuantity = Math.max(state.totalQuantity - existingItem.quantity, 0);
         state.totalAmount = Math.max(
-          state.products.reduce((total, item) => total + item.price * item.quantity, 0),
+          state.products.reduce((total, item) => total + item.price.default * item.quantity, 0), // Adjusted to use the correct price value
           0
         );
         setItemFunc(state.products, state.totalAmount, state.totalQuantity);

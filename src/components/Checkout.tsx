@@ -1,8 +1,13 @@
 // src/components/Checkout.tsx
 import React from 'react';
+import Navbar from './Navbar';
+import Footer from './Footer';
+import NavbarSansSearch from './NavbarSansSearch';
 
 const Checkout: React.FC = () => {
     return (
+        <div>
+            <NavbarSansSearch />
         <div className="container-fluid py-5">
             <div className="container py-5">
                 <h1 className="mb-4">Billing details</h1>
@@ -199,6 +204,8 @@ const Checkout: React.FC = () => {
                     </div>
                 </form>
             </div>
+        </div>
+        <Footer/>
         </div>
     );
 };

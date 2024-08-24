@@ -1,17 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
 import shopSlice from './slices/shopSlice';
-// import {logger} from 'redux-logger';
-// import {thunk} from 'redux-thunk';
+import logger from 'redux-logger';
+import { thunk } from 'redux-thunk';
 
-export const store = configureStore({
+// Define the RootState type
+export type RootState = ReturnType<typeof store.getState>;
+
+// Define the AppDispatch type
+export type AppDispatch = typeof store.dispatch;
+
+const store = configureStore({
   reducer: {
-    shop: shopSlice,
+    shop: shopSlice,  // Added the shop slice
   },
-//   middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware().concat(thunk, logger as any),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(thunk, logger as any),
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch 
+export default store;
