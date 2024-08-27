@@ -1,20 +1,13 @@
-import { Pool } from 'pg';
+import pool from '../config/db';
 import { User } from '../models/User'; // Adjust the import path as necessary
 
-const pool = new Pool({
-    user: 'your_user', // Replace with your database user
-    host: 'localhost',  // Replace with your database host
-    database: 'your_database', // Replace with your database name
-    password: 'your_password', // Replace with your database password
-    port: 5432, // Default PostgreSQL port
-});
 
 // Function to create a new user
 export const createUser = async (userData: Omit<User, 'id'>): Promise<User> => {
     const { firstName, lastName, email, password } = userData;
     try {
         const result = await pool.query(
-            'INSERT INTO users (firstName, lastName, email, password) VALUES ($1, $2, $3, $4) RETURNING *',
+            'INSERT INTO users (firstName, lastName, email, pssword) VALUES ($1, $2, $3, $4) RETURNING *',
             [firstName, lastName, email, password]
         );
         return result.rows[0]; // Return the created user

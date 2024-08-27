@@ -1,6 +1,4 @@
-import { Pool } from 'pg';
-
-const pool = new Pool();
+import pool from '../config/db';
 
 export interface User {
     id?: number;
@@ -25,4 +23,8 @@ export const findUserByEmail = async (email: string) => {
         [email]
     );
     return result.rows[0];
+};
+export const getUsers = async () => {
+    const result = await pool.query('SELECT * FROM users');
+    return result.rows;
 };

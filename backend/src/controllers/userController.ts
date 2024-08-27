@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+import { getUsers } from '../models/User';
 
 // Mock user database (for demonstration purposes)
-const users: { email: string; password: string }[] = [];
+const users: { firstName: string; lastName: string; email: string; password: string }[] = [];
 
 // Signup function
 export const signup = async (req: Request, res: Response) => {
@@ -14,7 +15,7 @@ export const signup = async (req: Request, res: Response) => {
     }
 
     // Save new user
-    users.push({ email, password });
+    users.push({ firstName, lastName, email, password });
     res.status(201).json({ message: 'User created' });
 };
 
@@ -29,6 +30,14 @@ export const signin = async (req: Request, res: Response) => {
     }
 
     // Generate a mock token (for demonstration purposes)
-    const token = 'your-token';
+    const token = 'Welcome!';
     res.status(200).json({ token });
+};
+export const fetchUsers = async (req: Request, res: Response) => {
+    try {
+        const users = await getUsers();
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 };

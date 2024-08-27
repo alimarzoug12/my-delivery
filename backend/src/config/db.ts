@@ -2,15 +2,14 @@ import { Pool } from 'pg';
 
 // Database configuration
 const pool = new Pool({
-    host: 'localhost',
-    port: 5432,
-    user: 'postgres',
-    password: '12345678',
-    database: 'postgres',
-    connectionTimeoutMillis: 30000, // 30 seconds
+    user: process.env.DB_USER || "postgres",
+    host: process.env.DB_HOST || "localhost",
+    database: process.env.DB_NAME || "postgres",
+    password: process.env.DB_PASSWORD || "12345678",
+    port: Number(process.env.DB_PORT) || 5432,
 });
 
-// Function to connect to the database
+// Function to connect to the databases
 export const connectDatabase = async () => {
     try {
         const client = await pool.connect();
