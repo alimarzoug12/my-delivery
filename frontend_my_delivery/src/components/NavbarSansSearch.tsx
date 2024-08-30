@@ -1,13 +1,25 @@
 // src/components/Navbar.tsx
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store'; // Adjust this import according to your store setup
+import { NavLink, useNavigate  } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../store';
+import { logout } from '../slices/userSlice'; // Adjust this import according to your store setup
 
 export default function NavbarSansSearch(){
 
     const totalQuantity = useSelector((state: RootState) => state.shop.totalQuantity);
+    const  firstname  = useSelector((state: RootState) => state.user.firstname);
+    const  lastname= useSelector((state: RootState) => state.user.lastname);
+    const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+    console.log("🚀 ~ firstname:", firstname)
+    const [searchTerm, setLocalSearchTerm] = useState('');
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/signin'); // Redirect to sign-in page
+    };
     return (
         <div className="container-fluid fixed-top">
             <div className="container topbar bg-primary d-none d-lg-block">
@@ -47,9 +59,21 @@ export default function NavbarSansSearch(){
                                     {totalQuantity}
                                 </span>
                             </a>
-                            <a href="/signin" className="my-auto">
-                                <i className="fas fa-user fa-2x"></i>
-                            </a>
+                            {isLoggedIn ? (
+                                <div className="dropdown">
+                                    <a className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i className="fas fa-user fa-2x"></i>
+                                    </a>
+                                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li className="dropdown-item">{firstname} {lastname}</li>
+                                        <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
+                                    </ul>
+                                </div>
+                            ) : (
+                                <a href="/signin" className="my-auto">
+                                    <i className="fas fa-user fa-2x"></i>
+                                </a>
+                            )}
                         </div>
                     </div>
                 </nav>
