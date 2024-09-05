@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { shopActions } from '../slices/shopSlice';
 import { RootState } from '../store';
 import Footer from './Footer';
@@ -9,7 +9,23 @@ import NavbarSansSearch from './NavbarSansSearch';
 const Cart = () => {
   const cartItems = useSelector((state: RootState) => state.shop.products);
   const totalAmount = useSelector((state: RootState) => state.shop.totalAmount);
+  const  firstname  = useSelector((state: RootState) => state.user.firstname);
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+  const navigate = useNavigate();
+
+  
+    console.log('aaaaaabb',firstname)
+    {
+      isLoggedIn? (navigate('/cart')) : navigate('/signin');
+    }
+  //   if(firstname!=''){
+  //     navigate('/cart')
+  // } else {
+  //     navigate('/signin'); // Redirect to sign-in page if not logged in
+  //   }
+  
+
 
   const handleDeleteItem = (title: string) => {
     dispatch(shopActions.deleteItem(title));

@@ -1,9 +1,9 @@
 // src/components/Navbar.tsx
 import React, { useState } from 'react';
-import { NavLink, useNavigate  } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
-import { logout } from '../slices/userSlice'; // Adjust this import according to your store setup
+import { logout } from '../slices/userSlice';
 
 interface NavbarProps {
     setSearchTerm: (term: string) => void;
@@ -11,10 +11,10 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ setSearchTerm }) => {
     const totalQuantity = useSelector((state: RootState) => state.shop.totalQuantity);
-    const  firstname  = useSelector((state: RootState) => state.user.firstname);
-    const  lastname= useSelector((state: RootState) => state.user.lastname);
+    const firstname = useSelector((state: RootState) => state.user.firstname);
+    const lastname = useSelector((state: RootState) => state.user.lastname);
     const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
-    console.log("🚀 ~ firstname:", firstname)
+
     const [searchTerm, setLocalSearchTerm] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();

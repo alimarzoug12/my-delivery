@@ -15,9 +15,8 @@ import Cart from './components/Cart';
 import Checkout from './components/Checkout';
 import PageHeader from './components/PageHeader';
 import ScrollToTopButton from './components/ScrollToTopButton';
-import { useLocation } from 'react-router-dom'; // Import useLocation here
-import Index from './pages';
-
+import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
+import { useLocation } from 'react-router-dom'; // Import useLocation
 
 const App: React.FC = () => {
     return (
@@ -29,49 +28,35 @@ const App: React.FC = () => {
 
 const MainContent: React.FC = () => {
     const location = useLocation();
+    
     type Product = {
         id: string;
         title: string;
         urlImage: string;
         price: string;
-    } 
-    const [addProduct, setAddProduct]= React.useState<Product[]>([]);
+    }; 
 
-    // const getTitle = () => {
-    //     switch (location.pathname) {
-    //         case '/':
-    //             return 'Welcome';
-    //         case '/checkout':
-    //             return 'Checkout';
-    //         case '/cart':
-    //             return 'Your Cart';
-    //         case '/testimonial':
-    //             return 'Testimonials';
-    //         case '/productDetail':
-    //             return 'Product Details';
-    //         case '/shop':
-    //             return 'Shop';
-    //         case '/contact':
-    //             return 'Contact Us';
-    //         default:
-    //             return 'Page Not Found';
-    //     }
-    // };
+    const [addProduct, setAddProduct] = React.useState<Product[]>([]);
 
     return (
         <>            
-            {/* <SearchModal /> */}
-            {/* <PageHeader title={getTitle()} /> */}
             <Routes>
-                <Route path="/signin" element={<Signin/>}/>
-                <Route path="/signup" element={<Signup/>}/>
+                <Route path="/signin" element={<Signin />} />
+                <Route path="/signup" element={<Signup />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/checkout" element={<Checkout />} />
-                <Route path="/cart" element={<Cart />} />
                 <Route path="/testimonial" element={<Testimonial />} />
                 <Route path="/productDetail" element={<ProductDetail />} />
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/contact" element={<Contact />} />
+
+                {/* Protect the Cart route */}
+                <Route path="/cart" element={
+                    <ProtectedRoute>
+                        <Cart />
+                    </ProtectedRoute>
+                } />
+
                 <Route path="*" element={<NotFound />} />
             </Routes>
             <ScrollToTopButton />
