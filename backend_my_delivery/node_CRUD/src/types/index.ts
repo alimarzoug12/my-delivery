@@ -11,3 +11,9 @@ export type UserType = {
     password: string
 
 }
+// src/types.ts
+export interface ShopRequestBody {
+    email: string;
+    title: string;
+    quantity: number;
+}

@@ -1,6 +1,7 @@
 import express from "express";
 
 import { addUser, getUser, deleteUser, login, updateUser, signup } from "../../controllers/users/userController";
+import { addOrUpdateProduct } from "../../controllers/shopController";
 
 
 
@@ -13,6 +14,41 @@ const usersRouter = express.Router();
  *   name: User
  *   description: The books managing API
  */
+
+/**
+ * @swagger
+ * /shop:
+ *   post:
+ *     summary: Add or update product in shop
+ *     tags: [User]
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               title:
+ *                 type: string
+ *               quantity:
+ *                 type: integer
+ *     responses:
+ *       201:
+ *         description: Product added/updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *                type: object
+ *       500:
+ *         description: error
+ *         content:
+ *           application/json:
+ *             schema:
+ *                type: object
+ *
+ */
+usersRouter.route("/shop").post(addOrUpdateProduct);
 
 /**
  * @swagger

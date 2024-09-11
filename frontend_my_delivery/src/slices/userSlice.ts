@@ -1,9 +1,17 @@
 // src/store/userSlice.ts
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
+interface UserState {
+    firstname: string;
+    lastname: string;
+    email: string;
+    isLoggedIn: boolean;
+}
+
+const initialState: UserState = {
     firstname: localStorage.getItem('firstname') || '',
     lastname: localStorage.getItem('lastname') || '',
+    email: localStorage.getItem('email') || '',
     isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
 };
 
@@ -11,28 +19,28 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setUserfirstName: (state, action) => {
+        setUserfirstName: (state, action: PayloadAction<string>) => {
             state.firstname = action.payload;
             state.isLoggedIn = true;
-
-            // Persist state in localStorage
             localStorage.setItem('firstname', action.payload);
             localStorage.setItem('isLoggedIn', 'true');
         },
-        setUserlastName: (state, action) => {
+        setUserlastName: (state, action: PayloadAction<string>) => {
             state.lastname = action.payload;
             state.isLoggedIn = true;
-
-            // Persist state in localStorage
             localStorage.setItem('lastname', action.payload);
+            localStorage.setItem('isLoggedIn', 'true');
+        },
+        setUseremail: (state, action: PayloadAction<string>) => {
+            state.email = action.payload;
+            state.isLoggedIn = true;
+            localStorage.setItem('email', action.payload);
             localStorage.setItem('isLoggedIn', 'true');
         },
         logout: (state) => {
             state.firstname = '';
             state.lastname = '';
             state.isLoggedIn = false;
-
-            // Remove state from localStorage
             localStorage.removeItem('firstname');
             localStorage.removeItem('lastname');
             localStorage.setItem('isLoggedIn', 'false');
@@ -40,5 +48,5 @@ const userSlice = createSlice({
     },
 });
 
-export const { setUserfirstName, setUserlastName, logout } = userSlice.actions;
+export const { setUserfirstName, setUserlastName,setUseremail, logout } = userSlice.actions;
 export default userSlice.reducer;
