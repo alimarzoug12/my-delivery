@@ -54,6 +54,9 @@
   },
   "devDependencies": {
     "@types/redux-logger": "^3.0.13",
-    "nodemon": "^3.1.4"
+    "customize-cra": "^1.0.0",
+    "nodemon": "^3.1.4",
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1"
   }
 }

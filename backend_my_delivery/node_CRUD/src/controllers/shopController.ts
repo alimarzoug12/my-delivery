@@ -5,15 +5,13 @@ import pool from "../database";
 // Add/Update product in the shop table
 // src/controllers/shopController.ts
 export const addOrUpdateProduct = async (req: Request, res: Response) => {
-    const { email, title, quantity } = req.body;
+    const { email, title } = req.body;
   
     try {
       const result = await pool.query(
-        `INSERT INTO shop (email, title, quantity)
-         VALUES ($1, $2, $3)
-         ON CONFLICT (title) 
-         DO UPDATE SET quantity = shop.quantity + excluded.quantity;`,
-        [email, title, quantity]
+        `INSERT INTO shop (email, description)
+         VALUES ($1, $2)`,
+        [email, title]
       );
       res.status(201).json(result.rows);
     } catch (error) {
@@ -32,7 +30,7 @@ export const getProductsByEmail = async (req: Request, res: Response) => {
 
     try {
         const result = await pool.query(
-            `SELECT title, quantity FROM shop WHERE email = $1`,
+            `SELECT description FROM shop WHERE email = $1`,
             [email]
         );
         res.status(200).json(result.rows);

@@ -1,17 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { shopActions } from '../slices/shopSlice';
 import { RootState } from '../store';
 import Footer from './Footer';
 import NavbarSansSearch from './NavbarSansSearch';
 import axios from 'axios';
+import { Modal, Button } from 'react-bootstrap'; // Bootstrap modal
 
 const Cart = () => {
   const cartItems = useSelector((state: RootState) => state.shop.products);
   const totalAmount = useSelector((state: RootState) => state.shop.totalAmount);
-  const email = useSelector((state: RootState) => state.user.email); // Use the logged-in user's email
+  const email = useSelector((state: RootState) => state.user.email); 
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+  const [showModal, setShowModal] = useState(false); // Modal visibility state
+  const [modalMessage, setModalMessage] = useState(''); // Modal message
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -43,24 +46,31 @@ const Cart = () => {
     }
   };
 
-  const handleShop = async() => {
+  const handleShop = async () => {
     const itemsToSave = cartItems.map(item => ({
-      email,
       title: item.title,
       quantity: item.quantity,
     }));
 
-    // Send the items to the backend to save in the shop table
-    await axios.post('http://localhost:4000/api/v1/shop', itemsToSave)
-      .then(response => {
-        console.log('Items saved successfully:', response.data);
-        console.log("aabc",email)
-        // Optionally, you can clear the cart here or show a success message
-        dispatch(shopActions.clearShop()); // Assuming you have a clearCart action
-      })
-      .catch(error => {
-        console.error('Error saving items:', error);
-      });
+    try {
+      const response = await axios.post('http://localhost:4000/api/v1/shop', { email, title: itemsToSave });
+      console.log('Items saved successfully:', response.data);
+
+      dispatch(shopActions.clearShop()); // Clear cart
+
+      // Show success modal with a custom message
+      setModalMessage('Thank you for shopping! Your order has been placed successfully.');
+      setShowModal(true);
+
+      // Hide modal after 3 seconds and navigate to the home page
+      setTimeout(() => {
+        setShowModal(false);
+        navigate('/');
+      }, 3000);
+      
+    } catch (error) {
+      console.error('Error saving items:', error);
+    }
   };
 
   // Ensure totalAmount is a number and has a default value if null or undefined
@@ -71,6 +81,20 @@ const Cart = () => {
   return (
     <div>
       <NavbarSansSearch />
+
+      {/* Modal for success message */}
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title className="text-success">Success</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{modalMessage}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={() => setShowModal(false)}>
+            OK
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <div className="container-fluid py-5">
         <div className="container py-5">
           <h1 className="text-center text-white display-6">Cart</h1>
