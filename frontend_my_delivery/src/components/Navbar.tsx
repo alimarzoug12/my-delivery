@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
 import { logout } from '../slices/userSlice';
+import { shopActions } from '../slices/shopSlice';
 
 interface NavbarProps {
     setSearchTerm: (term: string) => void;
@@ -22,11 +23,12 @@ const Navbar: React.FC<NavbarProps> = ({ setSearchTerm }) => {
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const term = e.target.value;
         setLocalSearchTerm(term);
-        setSearchTerm(term); // Update the parent state
+        setSearchTerm(term); 
     };
 
     const handleLogout = () => {
         dispatch(logout());
+        dispatch(shopActions.clearShop());
         navigate('/signin'); // Redirect to sign-in page
     };
 

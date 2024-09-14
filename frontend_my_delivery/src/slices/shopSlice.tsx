@@ -1,3 +1,4 @@
+// src/store/shopSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Price {
@@ -24,38 +25,48 @@ interface ProductState {
   totalAmount: number;
 }
 
-const items: Product[] = 
-  localStorage.getItem("products") !== null 
-    ? JSON.parse(localStorage.getItem("products") || "[]") 
-    : [];
-
-const totalAmount: number = 
-  localStorage.getItem("totalAmount") !== null 
-    ? JSON.parse(localStorage.getItem("totalAmount") || "0") 
-    : 0;
-
-const totalQuantity: number = 
-  localStorage.getItem("totalQuantity") !== null 
-    ? JSON.parse(localStorage.getItem("totalQuantity") || "0") 
-    : 0;
-
-const setItemFunc = (items: Product[], totalAmount: number, totalQuantity: number) => {
-  localStorage.setItem("products", JSON.stringify(items));
-  localStorage.setItem("totalAmount", JSON.stringify(totalAmount));
-  localStorage.setItem("totalQuantity", JSON.stringify(totalQuantity));
+// Helper functions to manage localStorage
+const loadProductsFromLocalStorage = (): Product[] => {
+  const items = localStorage.getItem('products');
+  return items ? JSON.parse(items) : [];
 };
 
+const loadTotalAmountFromLocalStorage = (): number => {
+  const totalAmount = localStorage.getItem('totalAmount');
+  return totalAmount ? JSON.parse(totalAmount) : 0;
+};
+
+const loadTotalQuantityFromLocalStorage = (): number => {
+  const totalQuantity = localStorage.getItem('totalQuantity');
+  return totalQuantity ? JSON.parse(totalQuantity) : 0;
+};
+
+const setItemFunc = (items: Product[], totalAmount: number, totalQuantity: number) => {
+  localStorage.setItem('products', JSON.stringify(items));
+  localStorage.setItem('totalAmount', JSON.stringify(totalAmount));
+  localStorage.setItem('totalQuantity', JSON.stringify(totalQuantity));
+};
+
+// Calculate the total amount and quantity from products
+const calculateTotals = (products: Product[]) => {
+  const totalQuantity = products.reduce((sum, item) => sum + item.quantity, 0);
+  const totalAmount = products.reduce((sum, item) => sum + item.totalPrice, 0);
+  return { totalAmount, totalQuantity };
+};
+
+
 const initialState: ProductState = {
-  products: items,
-  totalAmount: totalAmount,
-  totalQuantity: totalQuantity,
+  products: loadProductsFromLocalStorage(),
+  totalAmount: loadTotalAmountFromLocalStorage(),
+  totalQuantity: loadTotalQuantityFromLocalStorage(),
 };
 
 const shopSlice = createSlice({
   name: 'shop',
   initialState,
   reducers: {
-addItem(state, action: PayloadAction<Omit<Product, 'quantity' | 'totalPrice'>>) {
+    
+    addItem(state, action: PayloadAction<Omit<Product, 'quantity' | 'totalPrice'>>) {
       const newItem = action.payload;
       const existingItem = state.products.find((item) => item.title === newItem.title);
 
@@ -63,60 +74,66 @@ addItem(state, action: PayloadAction<Omit<Product, 'quantity' | 'totalPrice'>>) 
         state.products.push({
           ...newItem,
           quantity: 1,
-          totalPrice: newItem.price.default, // Adjusted to use the correct price value
+          totalPrice: newItem.price.default,
         });
-        state.totalQuantity++;
       } else {
         existingItem.quantity++;
-        existingItem.totalPrice += existingItem.price.default; // Adjusted to use the correct price value
-        state.totalQuantity++;
+        existingItem.totalPrice += existingItem.price.default;
       }
 
-      state.totalAmount = state.products.reduce(
-        (total, item) => total + item.price.default * item.quantity, // Adjusted to use the correct price value
-        0
-      );
+      
+      const { totalAmount, totalQuantity } = calculateTotals(state.products);
+      state.totalAmount = totalAmount;
+      state.totalQuantity = totalQuantity;
       setItemFunc(state.products, state.totalAmount, state.totalQuantity);
     },
+
     
     removeItem(state, action: PayloadAction<string>) {
       const title = action.payload;
-      const existingItem = state.products.find(item => item.title === title);
+      const existingItem = state.products.find((item) => item.title === title);
+
       if (existingItem) {
-        state.totalQuantity = Math.max(state.totalQuantity - 1, 0);
         if (existingItem.quantity === 1) {
-          state.products = state.products.filter(item => item.title !== title);
+          state.products = state.products.filter((item) => item.title !== title);
         } else {
           existingItem.quantity--;
-          existingItem.totalPrice -= existingItem.price.default; // Adjusted to use the correct price value
+          existingItem.totalPrice -= existingItem.price.default;
         }
-        state.totalAmount = Math.max(
-          state.products.reduce((total, item) => total + item.price.default * item.quantity, 0), // Adjusted to use the correct price value
-          0
-        );
-        setItemFunc(state.products, state.totalAmount, state.totalQuantity);
       }
+
+      
+      const { totalAmount, totalQuantity } = calculateTotals(state.products);
+      state.totalAmount = totalAmount;
+      state.totalQuantity = totalQuantity;
+      setItemFunc(state.products, state.totalAmount, state.totalQuantity);
     },
 
+    
     deleteItem(state, action: PayloadAction<string>) {
       const title = action.payload;
-      const existingItem = state.products.find(item => item.title === title);
+      const existingItem = state.products.find((item) => item.title === title);
+
       if (existingItem) {
-        state.products = state.products.filter(item => item.title !== title);
-        state.totalQuantity = Math.max(state.totalQuantity - existingItem.quantity, 0);
-        state.totalAmount = Math.max(
-          state.products.reduce((total, item) => total + item.price.default * item.quantity, 0), // Adjusted to use the correct price value
-          0
-        );
-        setItemFunc(state.products, state.totalAmount, state.totalQuantity);
+        state.products = state.products.filter((item) => item.title !== title);
       }
+
+      
+      const { totalAmount, totalQuantity } = calculateTotals(state.products);
+      state.totalAmount = totalAmount;
+      state.totalQuantity = totalQuantity;
+      setItemFunc(state.products, state.totalAmount, state.totalQuantity);
     },
 
+    
     clearShop(state) {
       state.products = [];
       state.totalAmount = 0;
       state.totalQuantity = 0;
       setItemFunc([], 0, 0);
+    },
+    setCartItems(state, action: PayloadAction<Product[]>) {
+      state.products = action.payload;
     },
   },
 });

@@ -41,7 +41,7 @@ export async function selectUser(email: string, password: string) {
     console.log("🚀 ~ selectUser ~ email:", email)
     try {
         const result = await pool.query(
-            `SELECT firstname as firstname, lastname as lastname  FROM public.users WHERE email='${email}' and pssword='${password}'`
+            `SELECT firstname as firstname, lastname as lastname, email as email  FROM public.users WHERE email='${email}' and pssword='${password}'`
         );
         console.log("🚀 ~ selectUser ~  result.rows[0]:",  result.rows[0])
        return result.rows[0];

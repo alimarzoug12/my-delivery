@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../store'; // Adjust this import according to your store setup
+import { RootState } from '../store'; 
 
 export default function SearchModal() {
   const [searchTerm, setSearchTerm] = useState('');
-  const products = useSelector((state: RootState) => state.shop.products); // Adjust according to your Redux store structure
+  const products = useSelector((state: RootState) => state.shop.products); 
 
-  // Filter products by title based on the search term
+  
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(searchTerm.toLowerCase())
   );

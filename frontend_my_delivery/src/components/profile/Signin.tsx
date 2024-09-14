@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setUserlastName,setUserfirstName } from '../../slices/userSlice';
+import { setUserlastName,setUserfirstName,setUseremail } from '../../slices/userSlice';
 import axios from 'axios';
 
 export default function Signin() {
@@ -22,8 +22,10 @@ export default function Signin() {
                     if (response.statusText==="OK") {
                         
                         console.log("🚀 ~ ------------okkk-----------",response.data.data.firstname)
+                        console.log("🚀 ~ ------------okkk-----------",response.data.data.email)
                         dispatch(setUserfirstName(response.data.data.firstname))
                         dispatch(setUserlastName(response.data.data.lastname))
+                        dispatch(setUseremail(response.data.data.email))
                         navigate('/');
                     } else {
                         alert('User not found!');

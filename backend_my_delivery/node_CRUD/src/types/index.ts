@@ -11,3 +11,8 @@ export type UserType = {
     password: string
 
 }
+export interface ShopRequestBody {
+    email: string;
+    title: string;
+    quantity: number;
+}

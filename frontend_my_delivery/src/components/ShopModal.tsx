@@ -57,10 +57,10 @@ export default function ShopModal({ item, isModalOpen, setIsModalOpen, categoryI
 
     const handleEventValidate = () => {
         addProduct.forEach(product => {
-            dispatch(shopActions.addItem(product)); // Add each selected product to the cart
+            dispatch(shopActions.addItem(product)); 
         });
         handleClose();
-        navigate('/cart');
+        
     };
 
     const shopCard: any = card;
