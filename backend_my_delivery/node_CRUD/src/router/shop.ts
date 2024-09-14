@@ -1,4 +1,3 @@
-// src/routes/shop.ts
 import express from 'express';
 import { addOrUpdateProduct, getProductsByEmail } from '../controllers/shopController';
 

@@ -31,7 +31,7 @@ const usersRouter = express.Router();
  *                 type: string
  *               title:
  *                 type: string
- *               quantity:
+ *               totalAmount:
  *                 type: integer
  *     responses:
  *       201:

@@ -4,6 +4,7 @@ import { NavLink, useNavigate  } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
 import { logout } from '../slices/userSlice'; // Adjust this import according to your store setup
+import { shopActions } from '../slices/shopSlice';
 
 export default function NavbarSansSearch(){
 
@@ -18,7 +19,8 @@ export default function NavbarSansSearch(){
 
     const handleLogout = () => {
         dispatch(logout());
-        navigate('/signin'); // Redirect to sign-in page
+        dispatch(shopActions.clearShop());
+        navigate('/signin'); 
     };
     return (
         <div className="container-fluid fixed-top">

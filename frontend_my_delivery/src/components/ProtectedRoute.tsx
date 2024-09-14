@@ -10,12 +10,12 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
 
-    // If the user is not logged in, navigate to the signin page
+    
     if (!isLoggedIn) {
         return <Navigate to="/signin" replace />;
     }
 
-    // If the user is logged in, render the children components
+    
     return children;
 };
 

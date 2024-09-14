@@ -54,18 +54,18 @@ const calculateTotals = (products: Product[]) => {
   return { totalAmount, totalQuantity };
 };
 
-// Initial state with data loaded from localStorage
+
 const initialState: ProductState = {
-  products: [],
-  totalAmount: 0,
-  totalQuantity: 0,
+  products: loadProductsFromLocalStorage(),
+  totalAmount: loadTotalAmountFromLocalStorage(),
+  totalQuantity: loadTotalQuantityFromLocalStorage(),
 };
 
 const shopSlice = createSlice({
   name: 'shop',
   initialState,
   reducers: {
-    // Add a new product or update the quantity of an existing product
+    
     addItem(state, action: PayloadAction<Omit<Product, 'quantity' | 'totalPrice'>>) {
       const newItem = action.payload;
       const existingItem = state.products.find((item) => item.title === newItem.title);
@@ -81,14 +81,14 @@ const shopSlice = createSlice({
         existingItem.totalPrice += existingItem.price.default;
       }
 
-      // Recalculate totals
+      
       const { totalAmount, totalQuantity } = calculateTotals(state.products);
       state.totalAmount = totalAmount;
       state.totalQuantity = totalQuantity;
       setItemFunc(state.products, state.totalAmount, state.totalQuantity);
     },
 
-    // Remove one quantity of a product or remove the product completely if quantity is 1
+    
     removeItem(state, action: PayloadAction<string>) {
       const title = action.payload;
       const existingItem = state.products.find((item) => item.title === title);
@@ -102,14 +102,14 @@ const shopSlice = createSlice({
         }
       }
 
-      // Recalculate totals
+      
       const { totalAmount, totalQuantity } = calculateTotals(state.products);
       state.totalAmount = totalAmount;
       state.totalQuantity = totalQuantity;
       setItemFunc(state.products, state.totalAmount, state.totalQuantity);
     },
 
-    // Remove a product completely from the cart
+    
     deleteItem(state, action: PayloadAction<string>) {
       const title = action.payload;
       const existingItem = state.products.find((item) => item.title === title);
@@ -118,14 +118,14 @@ const shopSlice = createSlice({
         state.products = state.products.filter((item) => item.title !== title);
       }
 
-      // Recalculate totals
+      
       const { totalAmount, totalQuantity } = calculateTotals(state.products);
       state.totalAmount = totalAmount;
       state.totalQuantity = totalQuantity;
       setItemFunc(state.products, state.totalAmount, state.totalQuantity);
     },
 
-    // Clear the entire cart
+    
     clearShop(state) {
       state.products = [];
       state.totalAmount = 0;

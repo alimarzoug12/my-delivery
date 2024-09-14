@@ -1,17 +1,14 @@
-// src/controllers/shopController.tsx
 import { Request, Response } from 'express';
 import pool from "../database";
 
-// Add/Update product in the shop table
-// src/controllers/shopController.ts
 export const addOrUpdateProduct = async (req: Request, res: Response) => {
-    const { email, title } = req.body;
+    const { email, title, totalAmount } = req.body;
   
     try {
       const result = await pool.query(
-        `INSERT INTO shop (email, description)
-         VALUES ($1, $2)`,
-        [email, title]
+        `INSERT INTO shop (email, description, total_price)
+         VALUES ($1, $2, $3) RETURNING *`,
+        [email, title, totalAmount]
       );
       res.status(201).json(result.rows);
     } catch (error) {
@@ -20,7 +17,6 @@ export const addOrUpdateProduct = async (req: Request, res: Response) => {
     }
   };
   
-// Fetch products by email
 export const getProductsByEmail = async (req: Request, res: Response) => {
     const { email } = req.query;
 

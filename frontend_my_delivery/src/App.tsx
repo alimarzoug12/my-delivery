@@ -8,15 +8,15 @@ import Shop from './components/Shop';
 import Contact from './components/Contact'; 
 import Signin from './components/profile/Signin';
 import Signup from './components/profile/Signup';
-import './App.css'; // Your custom styles
+import './App.css'; 
 import ProductDetail from './components/ProductDetail';
 import Testimonial from './components/Testimonial';
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';
 import PageHeader from './components/PageHeader';
 import ScrollToTopButton from './components/ScrollToTopButton';
-import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
-import { useLocation } from 'react-router-dom'; // Import useLocation
+import ProtectedRoute from './components/ProtectedRoute'; 
+import { useLocation } from 'react-router-dom'; 
 
 const App: React.FC = () => {
     return (

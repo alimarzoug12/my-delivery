@@ -53,16 +53,16 @@ const Cart = () => {
     }));
 
     try {
-      const response = await axios.post('http://localhost:4000/api/v1/shop', { email, title: itemsToSave });
+      const response = await axios.post('http://localhost:4000/api/v1/shop', { email, title: itemsToSave, totalAmount: totalWithShipping });
       console.log('Items saved successfully:', response.data);
 
-      dispatch(shopActions.clearShop()); // Clear cart
+      dispatch(shopActions.clearShop()); 
 
-      // Show success modal with a custom message
+      
       setModalMessage('Thank you for shopping! Your order has been placed successfully.');
       setShowModal(true);
 
-      // Hide modal after 3 seconds and navigate to the home page
+      
       setTimeout(() => {
         setShowModal(false);
         navigate('/');
@@ -73,7 +73,7 @@ const Cart = () => {
     }
   };
 
-  // Ensure totalAmount is a number and has a default value if null or undefined
+  
   const formattedTotalAmount = totalAmount ? totalAmount.toFixed(2) : '0.00';
   const shippingCost = 3.00;
   const totalWithShipping = (Number(formattedTotalAmount) + shippingCost).toFixed(2);
